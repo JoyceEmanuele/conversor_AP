@@ -27,13 +27,12 @@ function setup() {
 	.class("seletor");
 	sel.option('Aceitação por Pilha Vazia');
 	sel.option('Aceitação por Estado Final');
-	sel.changed(traduzir);
 }
 
 function traduzir() {
 	AFN = JSON.parse(entrada.value);
-	if(sel.value() == 'Aceitação por Pilha Vazia' && AFN.estadosFinais == "")PilhaVazia_EstadoFinal(AFN);
-	else if(sel.value() == 'Aceitação por Estado Final' && AFN.estadosFinais != "")EstadoFinal_PilhaVazia(AFN);
+	if(sel.value() == 'Aceitação por Pilha Vazia' && AFN.estadosFinais == "")sel.changed(PilhaVazia_EstadoFinal(AFN));
+	else if(sel.value() == 'Aceitação por Estado Final' && AFN.estadosFinais != "") sel.changed(EstadoFinal_PilhaVazia(AFN));
 };
 
 function EstadoFinal_PilhaVazia(AFN){
