@@ -24,29 +24,28 @@ function setup() {
 	entrada = document.getElementById('nde');
 	saida = document.getElementById('det');
 	sel = createSelect()
-	.class("seletor");
+		.class("seletor");
 	sel.option('Aceitação por Pilha Vazia');
 	sel.option('Aceitação por Estado Final');
 }
 
 function traduzir() {
 	AFN = JSON.parse(entrada.value);
-	if(sel.value() == 'Aceitação por Pilha Vazia' && AFN.estadosFinais == "")sel.changed(PilhaVazia_EstadoFinal(AFN));
-	else if(sel.value() == 'Aceitação por Estado Final' && AFN.estadosFinais != "") sel.changed(EstadoFinal_PilhaVazia(AFN));
+	if (sel.value() == 'Aceitação por Pilha Vazia' && AFN.estadosFinais == "") sel.changed(PilhaVazia_EstadoFinal(AFN));
+	else if (sel.value() == 'Aceitação por Estado Final' && AFN.estadosFinais != "") sel.changed(EstadoFinal_PilhaVazia(AFN));
 };
 
-function EstadoFinal_PilhaVazia(AFN){
+function EstadoFinal_PilhaVazia(AFN) {
 	AFN.estados.push("p0");
 	AFN.estados.push("pf");
 	AFN.pilhaInicial = "χ";
 	AFN.estadoInicial = "p0"
-
 	AFN.delta["p0"] = {};
 	AFN.delta["pf"] = {};
-	for(let j of AFN.alfabeto) {
+	for (let j of AFN.alfabeto) {
 		AFN.delta["p0"][j] = {};
 		AFN.delta["pf"][j] = {};
-		for(let k of AFN.empilhaveis) {
+		for (let k of AFN.empilhaveis) {
 			AFN.delta["p0"][j][k] = [];
 			AFN.delta["pf"][j][k] = [];
 		}
@@ -54,26 +53,26 @@ function EstadoFinal_PilhaVazia(AFN){
 
 	AFN.empilhaveis.push("χ");
 
-	for(let i of AFN.estados) {
-        for(let j of AFN.alfabeto) {
-            for(let k of AFN.empilhaveis) {
-                AFN.delta[i][j]["χ"] = [];
-            }
-        }
+	for (let i of AFN.estados) {
+		for (let j of AFN.alfabeto) {
+			for (let k of AFN.empilhaveis) {
+				AFN.delta[i][j]["χ"] = [];
+			}
+		}
 	}
 
-	AFN.delta.p0.ε.χ =  [{"estado" : "q0", "pilha" : "ζχ"}];
-	
-	for(let i of AFN.estadosFinais){
-		for(let j of AFN.empilhaveis){
-		AFN.delta[i].ε[j] = [{"estado" : "pf", "pilha" : ""}];
+	AFN.delta.p0.ε.χ = [{ "estado": "q0", "pilha": "ζχ" }];
+
+	for (let i of AFN.estadosFinais) {
+		for (let j of AFN.empilhaveis) {
+			AFN.delta[i].ε[j] = [{ "estado": "pf", "pilha": "" }];
 		}
 	}
 
 	AFN.estadosFinais = [];
-	
-	for(let i of AFN.empilhaveis){
-	AFN.delta.pf.ε[i] = [{"estado" : "pf", "pilha" : ""}]
+
+	for (let i of AFN.empilhaveis) {
+		AFN.delta.pf.ε[i] = [{ "estado": "pf", "pilha": "" }]
 	}
 
 	saida = document.getElementById('det');
@@ -81,8 +80,7 @@ function EstadoFinal_PilhaVazia(AFN){
 
 }
 
-
-function PilhaVazia_EstadoFinal(AFN){
+function PilhaVazia_EstadoFinal(AFN) {
 
 	AFN.estados.push("p0");
 	AFN.estados.push("pf");
@@ -92,10 +90,10 @@ function PilhaVazia_EstadoFinal(AFN){
 
 	AFN.delta["p0"] = {};
 	AFN.delta["pf"] = {};
-	for(let j of AFN.alfabeto) {
+	for (let j of AFN.alfabeto) {
 		AFN.delta["p0"][j] = {};
 		AFN.delta["pf"][j] = {};
-		for(let k of AFN.empilhaveis) {
+		for (let k of AFN.empilhaveis) {
 			AFN.delta["p0"][j][k] = [];
 			AFN.delta["pf"][j][k] = [];
 		}
@@ -103,19 +101,19 @@ function PilhaVazia_EstadoFinal(AFN){
 
 	AFN.empilhaveis.push("χ");
 
-	for(let i of AFN.estados) {
-        for(let j of AFN.alfabeto) {
-            for(let k of AFN.empilhaveis) {
-                AFN.delta[i][j]["χ"] = [];
-            }
-        }
+	for (let i of AFN.estados) {
+		for (let j of AFN.alfabeto) {
+			for (let k of AFN.empilhaveis) {
+				AFN.delta[i][j]["χ"] = [];
+			}
+		}
 	}
 
-	AFN.delta.p0.ε.χ =  [{"estado" : "q0", "pilha" : "ζχ"}];
-	
-	for(let i of AFN.estados){
-		if(i == "p0" || i == "pf") continue;
-		AFN.delta[i].ε.χ = [{"estado" : "pf", "pilha" : ""}];
+	AFN.delta.p0.ε.χ = [{ "estado": "q0", "pilha": "ζχ" }];
+
+	for (let i of AFN.estados) {
+		if (i == "p0" || i == "pf") continue;
+		AFN.delta[i].ε.χ = [{ "estado": "pf", "pilha": "" }];
 	}
 
 	console.log(AFN.empilhaveis);
